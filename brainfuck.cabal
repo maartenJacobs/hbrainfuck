@@ -1,0 +1,40 @@
+name:                brainfuck
+version:             0.1.0.0
+synopsis:            brainfuck interpreter written in Haskell
+homepage:            https://github.com/maartenJacobs/hBrainfuck
+license:             BSD3
+license-file:        LICENSE
+author:              nervouscloud
+maintainer:          maarten.j.jacobs@gmail.com
+copyright:           2017 Maarten Jacobs
+build-type:          Simple
+cabal-version:       >=1.10
+extra-source-files:  README.md
+
+library
+  hs-source-dirs:      src
+  default-language:    Haskell2010
+  exposed-modules:     Brainfuck.Parser
+                     , Brainfuck.Interpreter
+                     , Brainfuck.Util
+  build-depends:       base >= 4.7 && < 5
+                     , parsec == 3.1.11
+
+executable brainfuck
+  hs-source-dirs:      app
+  main-is:             Main.hs
+  default-language:    Haskell2010
+  build-depends:       base >= 4.7 && < 5
+                     , brainfuck
+
+Test-Suite brainfuck-spec
+  type:             exitcode-stdio-1.0
+  main-is:          Spec.hs
+  build-depends:    base
+                  , Cabal >= 1.10
+                  , brainfuck
+                  , hspec == 2.4.4
+  default-language: Haskell2010
+  ghc-options:      -Wall
+  hs-source-dirs:   tests
+  other-modules:    Brainfuck.ParserSpec
