@@ -6,6 +6,7 @@ module Brainfuck.Parser (
 
 import qualified Text.Parsec as Parsec (parse)
 import           Text.Parsec hiding (parse)
+import           Text.Parsec.String (Parser)
 import           Data.Maybe  (catMaybes)
 
 {-
@@ -23,19 +24,19 @@ data Command = MoveRight | MoveLeft
              | Loop [Command]
             deriving (Show, Eq)
 
-statements :: Parsec String st [Command]
+statements :: Parser [Command]
 statements = catMaybes <$> many (try (Just <$> statement) <|> (anyOtherChar >> return Nothing))
 
-statement :: Parsec String st Command
+statement :: Parser Command
 statement = command <|> loop
 
-command :: Parsec String st Command
+command :: Parser Command
 command = charToCommand <$> oneOf "+-.,<>"
 
-loop :: Parsec String st Command
+loop :: Parser Command
 loop = Loop <$> between (char '[') (char ']') statements
 
-anyOtherChar :: Parsec String st Char
+anyOtherChar :: Parser Char
 anyOtherChar = noneOf "+-.,<>[]"
 
 charToCommand :: Char -> Command
